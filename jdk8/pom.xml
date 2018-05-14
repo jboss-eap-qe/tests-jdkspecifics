@@ -5,13 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <groupId>com.redhat.qe</groupId>
-    <artifactId>eap-tests-jdkspecifics</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.redhat.eap.qa</groupId>
+    <artifactId>tests-jdkspecifics-jdk8</artifactId>
+    <version>1.0.0.Final-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <parent>
+        <groupId>org.jboss.eap.qa</groupId>
+        <artifactId>tests-jdkspecifics</artifactId>
+        <version>1.0.0.Final-SNAPSHOT</version>
+    </parent>
+
     <properties>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jboss.home/>
