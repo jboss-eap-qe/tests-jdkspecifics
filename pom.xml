@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.jboss.eap.qa</groupId>
+    <artifactId>tests-jdkspecifics</artifactId>
+    <version>1.0.0.Final-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>jboss-public</id>
+            <name>JBoss Nexus Public Repository</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <profiles>
+        <profile>
+            <id>jdk8</id>
+            <activation>
+                <property>
+                    <name>jdk8</name>
+                </property>
+            </activation>
+
+            <modules>
+                <module>jdk8</module>
+            </modules>
+
+            <properties>
+                <maven.compiler.target>1.8</maven.compiler.target>
+            </properties>
+        </profile>
+        <profile>
+            <id>jdk9</id>
+            <activation>
+                <property>
+                    <name>jdk9</name>
+                </property>
+            </activation>
+
+            <modules>
+                <module>jdk8</module>
+                <module>jdk9</module>
+            </modules>
+
+            <properties>
+                <maven.compiler.target>1.9</maven.compiler.target>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>
