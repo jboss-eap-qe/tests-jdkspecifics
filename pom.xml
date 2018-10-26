@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jboss.eap.qa</groupId>
+    <groupId>org.jboss.eap.qe</groupId>
     <artifactId>tests-jdkspecifics</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.target>${java.specification.version}</maven.compiler.target>
+        <maven.compiler.source>${java.specification.version}</maven.compiler.source>
+        <maven.compiler.testTarget>${maven.compiler.target}</maven.compiler.testTarget>
+        <maven.compiler.testSource>${maven.compiler.source}</maven.compiler.testSource>
+        <tests.jdkspecifics.runtime.zip.url/>
+        <tests.jdkspecifics.runtime.zip>${project.build.directory}/runtime.zip</tests.jdkspecifics.runtime.zip>
+        <tests.jdkspecifics.runtime.dir>target/runtime/</tests.jdkspecifics.runtime.dir>
     </properties>
 
     <repositories>
@@ -22,39 +27,96 @@
         </repository>
     </repositories>
 
+   <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>get-and-unzip-runtime-from-url</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <target>
+                                <get src="${tests.jdkspecifics.runtime.zip.url}"
+                                     dest="${tests.jdkspecifics.runtime.zip}"/>
+                                <unzip src="${tests.jdkspecifics.runtime.zip}"
+                                       dest="${project.build.directory}"/>
+                                <move todir="${tests.jdkspecifics.runtime.dir}">
+                                    <fileset dir="${project.build.directory}">
+                                        <include name="jboss*/**/*"/>
+                                        <include name="wildfly*/**/*"/>
+                                    </fileset>
+                                    <cutdirsmapper dirs="1"/>
+                                </move>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <profiles>
         <profile>
             <id>jdk8</id>
             <activation>
-                <property>
-                    <name>jdk8</name>
-                </property>
+                <jdk>1.8</jdk>
             </activation>
-
             <modules>
                 <module>jdk8</module>
             </modules>
-
-            <properties>
-                <maven.compiler.target>1.8</maven.compiler.target>
-            </properties>
         </profile>
         <profile>
             <id>jdk9</id>
             <activation>
-                <property>
-                    <name>jdk9</name>
-                </property>
+                <jdk>9</jdk>
             </activation>
-
             <modules>
                 <module>jdk8</module>
                 <module>jdk9</module>
             </modules>
-
-            <properties>
-                <maven.compiler.target>1.9</maven.compiler.target>
-            </properties>
+        </profile>
+        <profile>
+            <id>jdk10</id>
+            <activation>
+                <jdk>10</jdk>
+            </activation>
+            <modules>
+                <module>jdk8</module>
+                <module>jdk9</module>
+                <module>jdk10</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>jdk11</id>
+            <activation>
+                <jdk>11</jdk>
+            </activation>
+            <modules>
+                <module>jdk8</module>
+                <module>jdk9</module>
+                <module>jdk10</module>
+                <module>jdk11</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>jdk12</id>
+            <activation>
+                <jdk>12</jdk>
+            </activation>
+            <modules>
+                <module>jdk8</module>
+                <module>jdk9</module>
+                <module>jdk10</module>
+                <module>jdk11</module>
+                <module>jdk12</module>
+            </modules>
         </profile>
     </profiles>
 
