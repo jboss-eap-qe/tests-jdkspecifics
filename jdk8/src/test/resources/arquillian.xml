@@ -15,7 +15,7 @@
             <property name="serverConfig">standalone-full.xml</property>
             <property name="startupTimeoutInSeconds">120</property>
             <property name="allowConnectingToRunningServer">false</property>
-            <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=256m</property>
+            <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=256m ${modular.jvm.args}</property>
         </configuration>
     </container>
 
@@ -26,7 +26,7 @@
                 <property name="serverConfig">standalone-ha.xml</property>
                 <property name="startupTimeoutInSeconds">120</property>
                 <property name="allowConnectingToRunningServer">false</property>
-                <property name="javaVmArguments">-Xmx256m -Djboss.node.name=node1 -Djboss.server.base.dir=${basedir}/target/servers/node1 -Djava.net.preferIPv4Stack=true</property>
+                <property name="javaVmArguments">-Xmx256m -Djboss.node.name=node1 -Djboss.server.base.dir=${basedir}/target/servers/node1 -Djava.net.preferIPv4Stack=true ${modular.jvm.args}</property>
             </configuration>
         </container>
         <container qualifier="node2" mode="manual">
@@ -35,7 +35,7 @@
                 <property name="serverConfig">standalone-ha.xml</property>
                 <property name="startupTimeoutInSeconds">120</property>
                 <property name="allowConnectingToRunningServer">false</property>
-                <property name="javaVmArguments">-Xmx256m -Djboss.node.name=node2 -Djboss.socket.binding.port-offset=100 -Djboss.server.base.dir=${basedir}/target/servers/node2 -Djava.net.preferIPv4Stack=true</property>
+                <property name="javaVmArguments">-Xmx256m -Djboss.node.name=node2 -Djboss.socket.binding.port-offset=100 -Djboss.server.base.dir=${basedir}/target/servers/node2 -Djava.net.preferIPv4Stack=true ${modular.jvm.args}</property>
                 <property name="managementPort">${node2ManagementPort}</property>
             </configuration>
         </container>
