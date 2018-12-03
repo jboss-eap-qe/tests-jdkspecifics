@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://jboss.org/schema/arquillian"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <defaultProtocol type="Servlet 3.0"/>
+
+    <engine>
+        <property name="deploymentExportPath">target/arquillian-export</property>
+    </engine>
+
+    <container qualifier="jboss" default="true">
+        <configuration>
+            <property name="jbossHome">${jboss.home:jboss-eap-6.4}</property>
+            <property name="serverConfig">standalone-full.xml</property>
+            <property name="startupTimeoutInSeconds">120</property>
+            <property name="allowConnectingToRunningServer">false</property>
+            <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=256m ${modular.jvm.args}</property>
+        </configuration>
+    </container>
+
+    <group qualifier="jboss-cluster">
+        <container qualifier="node1" mode="manual">
+            <configuration>
+                <property name="jbossHome">${jboss.home}</property>
+                <property name="serverConfig">standalone-ha.xml</property>
+                <property name="startupTimeoutInSeconds">120</property>
+                <property name="allowConnectingToRunningServer">false</property>
+                <property name="javaVmArguments">-Xmx256m -Djboss.node.name=node1 -Djboss.server.base.dir=${basedir}/target/servers/node1 -Djava.net.preferIPv4Stack=true ${modular.jvm.args}</property>
+            </configuration>
+        </container>
+        <container qualifier="node2" mode="manual">
+            <configuration>
+                <property name="jbossHome">${jboss.home}</property>
+                <property name="serverConfig">standalone-ha.xml</property>
+                <property name="startupTimeoutInSeconds">120</property>
+                <property name="allowConnectingToRunningServer">false</property>
+                <property name="javaVmArguments">-Xmx256m -Djboss.node.name=node2 -Djboss.socket.binding.port-offset=100 -Djboss.server.base.dir=${basedir}/target/servers/node2 -Djava.net.preferIPv4Stack=true ${modular.jvm.args}</property>
+                <property name="managementPort">${node2ManagementPort}</property>
+            </configuration>
+        </container>
+    </group>
+
+</arquillian>
