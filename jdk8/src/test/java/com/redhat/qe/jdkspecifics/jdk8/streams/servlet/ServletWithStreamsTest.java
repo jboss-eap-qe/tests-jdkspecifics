@@ -27,7 +27,6 @@ public class ServletWithStreamsTest {
         WebArchive war = ShrinkWrap.create(WebArchive.class, "streams-in-servlet.war");
         war.addPackage(ServletWithStreamsTest.class.getPackage());
         war.addClasses(Car.class, Color.class);
-        war.as(ZipExporter.class).exportTo(new File("/tmp", war.getName()), true);
         return war;
     }
 
