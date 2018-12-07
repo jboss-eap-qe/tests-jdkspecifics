@@ -36,7 +36,6 @@ public class JspWithLambdaExpressionTest {
                 .add(new UrlAsset(JspWithLambdaExpressionTest.class.getResource("jsp-with-lambdas.jsp")), "jsp-with-lambdas.jsp")
                 .add(new UrlAsset(JspWithLambdaExpressionTest.class.getResource("jsp-with-lambdas-implicit-variables.jsp")),
                         "jsp-with-lambdas-implicit-variables.jsp");
-        war.as(ZipExporter.class).exportTo(new File("/tmp", war.getName()), true);
         return war;
     }
 
