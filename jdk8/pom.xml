@@ -30,14 +30,6 @@
         <version.com.sun.xml.ws.jaxws-ri>2.3.1</version.com.sun.xml.ws.jaxws-ri>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>jboss-public-repository-group</id>
-            <name>JBoss Public Maven Repository Group</name>
-            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-        </repository>
-    </repositories>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
