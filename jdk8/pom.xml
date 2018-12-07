@@ -114,12 +114,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-ri</artifactId>
-            <version>${version.com.sun.xml.ws.jaxws-ri}</version>
-            <type>pom</type>
-        </dependency>
     </dependencies>
 
     <profiles>
@@ -190,6 +184,20 @@
             <properties>
                 <modular.jvm.args>--add-modules=java.se</modular.jvm.args>
             </properties>
+        </profile>
+        <profile>
+            <id>post-jep-320-deps</id>
+            <activation>
+                <jdk>[11,)</jdk>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sun.xml.ws</groupId>
+                    <artifactId>jaxws-ri</artifactId>
+                    <version>${version.com.sun.xml.ws.jaxws-ri}</version>
+                    <type>pom</type>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 
