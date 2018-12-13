@@ -4,11 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
-    <groupId>com.redhat.eap.qa</groupId>
     <artifactId>tests-jdkspecifics-jdk8</artifactId>
-    <version>1.0.0.Final-SNAPSHOT</version>
-    <packaging>jar</packaging>
 
     <parent>
         <groupId>org.jboss.eap.qe</groupId>
@@ -197,82 +193,14 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <id>prepare-server-directories-for-cluster-nodes</id>
-                        <phase>generate-test-resources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <!-- node1 -->
-                                <delete dir="${project.build.directory}/servers/node1"/>
-                                <copy todir="${project.build.directory}/servers/node1">
-                                    <fileset dir="${basedir}/../${tests.jdkspecifics.runtime.dir}">
-                                        <include name="standalone/**/*"/>
-                                    </fileset>
-                                    <cutdirsmapper dirs="1"/>
-                                </copy>
-
-                                <!-- node2 -->
-                                <delete dir="${project.build.directory}/servers/node2"/>
-                                <copy todir="${project.build.directory}/servers/node2">
-                                    <fileset dir="${basedir}/../${tests.jdkspecifics.runtime.dir}">
-                                        <include name="standalone/**/*"/>
-                                    </fileset>
-                                    <cutdirsmapper dirs="1"/>
-                                </copy>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.16</version>
                 <configuration>
                     <systemProperties>
                         <jboss.home>${basedir}/../${tests.jdkspecifics.runtime.dir}</jboss.home>
-                        <node2ManagementPort>${node2.management.port}</node2ManagementPort>
                         <modular.jvm.args>${modular.jvm.args}</modular.jvm.args>
                     </systemProperties>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>default-test</id>
-                        <configuration>
-                            <testFailureIgnore>true</testFailureIgnore>
-                            <failIfNoTests>false</failIfNoTests>
-                            <excludes>
-                                <exclude>**/*ClusteringTest.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>clustering-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <testFailureIgnore>true</testFailureIgnore>
-                            <failIfNoTests>false</failIfNoTests>
-                            <includes>
-                                <include>**/*ClusteringTest.java</include>
-                            </includes>
-                            <systemPropertyVariables>
-                                <arquillian.launch>jboss-cluster</arquillian.launch>
-                                <node1RemotingPort>${node1RemotingPort}</node1RemotingPort>
-                                <node2RemotingPort>${node2RemotingPort}</node2RemotingPort>
-                            </systemPropertyVariables>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

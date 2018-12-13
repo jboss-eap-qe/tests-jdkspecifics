@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.jboss.eap.qe</groupId>
@@ -17,6 +18,7 @@
         <tests.jdkspecifics.runtime.zip.url/>
         <tests.jdkspecifics.runtime.zip>${project.build.directory}/runtime.zip</tests.jdkspecifics.runtime.zip>
         <tests.jdkspecifics.runtime.dir>target/runtime/</tests.jdkspecifics.runtime.dir>
+        <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
     </properties>
 
     <repositories>
@@ -27,42 +29,50 @@
         </repository>
     </repositories>
 
-   <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <id>get-and-unzip-runtime-from-url</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <inherited>false</inherited>
-                        <configuration>
-                            <target>
-                                <get src="${tests.jdkspecifics.runtime.zip.url}"
-                                     dest="${tests.jdkspecifics.runtime.zip}"/>
-                                <unzip src="${tests.jdkspecifics.runtime.zip}"
-                                       dest="${project.build.directory}"/>
-                                <move todir="${tests.jdkspecifics.runtime.dir}">
-                                    <fileset dir="${project.build.directory}">
-                                        <include name="jboss*/**/*"/>
-                                        <include name="wildfly*/**/*"/>
-                                    </fileset>
-                                    <cutdirsmapper dirs="1"/>
-                                </move>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
     <profiles>
+        <profile>
+            <id>noprepare</id>
+            <activation>
+                <property>
+                    <name>!noprepare</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>get-and-unzip-runtime-from-url</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <inherited>false</inherited>
+                                <configuration>
+                                    <target>
+                                        <get src="${tests.jdkspecifics.runtime.zip.url}"
+                                             dest="${tests.jdkspecifics.runtime.zip}"/>
+                                        <unzip src="${tests.jdkspecifics.runtime.zip}"
+                                               dest="${project.build.directory}"/>
+                                        <move todir="${tests.jdkspecifics.runtime.dir}">
+                                            <fileset dir="${project.build.directory}">
+                                                <include name="jboss*/**/*"/>
+                                                <include name="wildfly*/**/*"/>
+                                            </fileset>
+                                            <cutdirsmapper dirs="1"/>
+                                        </move>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <profile>
             <id>jdk8</id>
             <activation>
